@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "capstone-wknd": {
+      "previewOrg": "madhupranjan80",
+      "previewSite": "capstone-wknd",
+      "contentHostUrl": "https://content.da.live/madhupranjan80/capstone-wknd/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}

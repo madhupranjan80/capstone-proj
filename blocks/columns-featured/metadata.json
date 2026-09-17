@@ -1,0 +1,17 @@
+{
+  "variantName": "columns-featured",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "grey",
+    "density": "normal",
+    "purpose": "featured-article",
+    "imagePattern": "large-left",
+    "structure": "image | eyebrow + heading + description + cta"
+  },
+  "contentPattern": "A single row with two columns: the first column holds a large image, the second holds an eyebrow label, heading, description paragraph, and a CTA link rendered as a button. Stacks vertically on mobile (image first).",
+  "usage": "Featured-article promo with a large image beside supporting copy, typically placed on a grey section background.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": ["columns-featured"]
+}
