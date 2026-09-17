@@ -1,0 +1,76 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://wknd.site/us/en.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en.html",
+      "description": "WKND US/EN homepage: hero carousel, featured article, article card grids, and a feature banner.",
+      "urlPattern": "/us/*",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [".carousel.cmp-carousel--hero", ".cmp-carousel--hero"]
+        },
+        {
+          "name": "columns-featured",
+          "instances": [".teaser.cmp-teaser--featured", ".cmp-teaser--featured"]
+        },
+        {
+          "name": "cards-article",
+          "instances": [".image-list.list", ".cmp-image-list"]
+        },
+        {
+          "name": "hero-feature",
+          "instances": [".teaser.cmp-teaser--hero.cmp-teaser--imagebottom", ".cmp-teaser--hero.cmp-teaser--imagebottom"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero Carousel",
+          "selector": [".carousel.cmp-carousel--hero"],
+          "style": null,
+          "blocks": ["carousel-hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Featured Article",
+          "selector": [".teaser.cmp-teaser--featured"],
+          "style": "grey",
+          "blocks": ["columns-featured"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-3",
+          "name": "Recent Articles",
+          "selector": ["main.cmp-layout-container--fixed:nth-of-type(1)"],
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline"]
+        },
+        {
+          "id": "section-4",
+          "name": "Next Adventures - Climbing New Zealand feature",
+          "selector": [".teaser.cmp-teaser--hero.cmp-teaser--imagebottom"],
+          "style": null,
+          "blocks": ["hero-feature"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-5",
+          "name": "Where do you want to go",
+          "selector": ["main.cmp-layout-container--fixed:nth-of-type(2)"],
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [".title"]
+        }
+      ]
+    }
+  ]
+}

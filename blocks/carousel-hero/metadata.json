@@ -1,0 +1,17 @@
+{
+  "variantName": "carousel-hero",
+  "baseBlock": "carousel",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "hero",
+    "imagePattern": "full-bleed",
+    "structure": "image + heading + description + cta per slide"
+  },
+  "contentPattern": "One row per slide: first cell is the full-bleed background image, second cell holds heading, description, and a CTA link rendered as a button. Multiple rows produce a rotating carousel with dot indicators and prev/next arrows.",
+  "usage": "Full-bleed hero carousel used at the top of landing pages to rotate through featured experiences.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": ["carousel-hero"]
+}

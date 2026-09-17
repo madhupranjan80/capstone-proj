@@ -1,0 +1,87 @@
+/* Block: hero-feature
+ * Full-bleed background photo with a white content card overlapping its
+ * lower edge. Values extracted from source computed styles
+ * (migration-work/hero-feature-extracted.css). */
+
+.hero-feature-container .hero-feature-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.hero-feature {
+  display: block;
+  color: rgb(32 32 32);
+  padding: 0;
+}
+
+/* Full-bleed image */
+.hero-feature .hero-feature-image,
+.hero-feature > div:first-child {
+  display: block;
+}
+
+.hero-feature picture {
+  display: block;
+}
+
+.hero-feature img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+/* White content card overlapping the image's lower edge */
+.hero-feature .hero-feature-content {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  margin: -48px 16px 0;
+  padding: 24px;
+  background-color: rgb(255 255 255);
+}
+
+.hero-feature .hero-feature-content h2 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 54px;
+  color: rgb(32 32 32);
+}
+
+.hero-feature .hero-feature-content p {
+  margin: 14px 0 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: 31.5px;
+  color: rgb(32 32 32);
+}
+
+.hero-feature .hero-feature-content p.button-wrapper {
+  margin-top: 22px;
+}
+
+/* Fallback when no image is authored */
+.hero-feature.no-image {
+  padding: 40px 24px;
+}
+
+.hero-feature.no-image .hero-feature-content {
+  margin: 0;
+  padding: 0;
+}
+
+@media (width >= 900px) {
+  .hero-feature img {
+    /* Source: 1440 x 640 full-bleed hero image */
+    aspect-ratio: 2.25 / 1;
+  }
+
+  .hero-feature .hero-feature-content {
+    max-width: 1200px;
+    margin: -180px auto 0;
+    padding: 24px 28px;
+  }
+}
