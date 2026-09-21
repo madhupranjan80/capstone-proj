@@ -1,0 +1,16 @@
+{
+  "variantName": "accordion-faq",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "normal",
+    "purpose": "faq",
+    "structure": "collapsible question/answer pairs"
+  },
+  "contentPattern": "One row per Q&A pair. The first cell is the question (summary label), the second cell is the answer (panel body). Clicking a question expands its answer.",
+  "usage": "FAQ list of collapsible question/answer pairs.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": ["accordion-faq"]
+}

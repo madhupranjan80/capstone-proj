@@ -1,0 +1,17 @@
+{
+  "variantName": "cards-profile",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "grid-4",
+    "purpose": "person-profiles",
+    "imagePattern": "circular-avatar",
+    "structure": "circular photo + name + role + social links"
+  },
+  "contentPattern": "One row per person. Each card has an image cell (rendered as a circular avatar) followed by a body cell containing the name, a role/subtitle, and a row of social links. Rendered as a centered responsive grid.",
+  "usage": "Grid of team/contributor profile cards (circular photo, name, role, social links). Used on the About Us page for Contributors and WKND Guides.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": ["cards-profile"]
+}

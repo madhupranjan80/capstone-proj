@@ -13,5 +13,14 @@
   "usage": "Grid of article/destination teaser cards (image on top, title, short description). Reused for 'Recent Articles' and 'Where do you want to go' sections.",
   "canonicalModelStructure": "standalone",
   "options": [],
-  "memberVariantIds": ["cards-article"]
+  "memberVariantIds": [
+    "cards-article"
+  ],
+  "usageTracking": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
 }
