@@ -13,5 +13,10 @@
   "usage": "Full-bleed hero carousel used at the top of landing pages to rotate through featured experiences.",
   "canonicalModelStructure": "standalone",
   "options": [],
-  "memberVariantIds": ["carousel-hero"]
+  "memberVariantIds": ["carousel-hero"],
+  "usageTracking": {
+    "pagesUsing": ["/us/en", "/us/en/adventures/bali-surf-camp"],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
 }

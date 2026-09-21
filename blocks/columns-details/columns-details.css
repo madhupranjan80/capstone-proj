@@ -1,0 +1,39 @@
+.columns-details {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each label/value pair, with a left accent rule like the source */
+.columns-details .columns-details-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0 12px 20px;
+  border-left: 2px solid var(--cta-color, rgb(255 234 0));
+}
+
+.columns-details .columns-details-item + .columns-details-item {
+  margin-top: 8px;
+}
+
+.columns-details .columns-details-label {
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+}
+
+.columns-details .columns-details-value {
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.columns-details .columns-details-label p,
+.columns-details .columns-details-value p {
+  margin: 0;
+}

@@ -13,5 +13,14 @@
   "usage": "Single full-bleed feature banner promoting one adventure/trip, with an overlaid white content card.",
   "canonicalModelStructure": "standalone",
   "options": [],
-  "memberVariantIds": ["hero-feature"]
+  "memberVariantIds": [
+    "hero-feature"
+  ],
+  "usageTracking": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
 }
