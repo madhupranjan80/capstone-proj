@@ -123,11 +123,55 @@ export default async function decorate(block) {
     </form>`;
 
   // --- Locale list (hidden until language toggle clicked) ---
+  // The imported content is a flat list of locale codes (en-US, es-US, en-CA…).
+  // The source groups them by country, each with a country name and flag, and
+  // lists the locale links for that country inline. Rebuild that structure.
+  const COUNTRY_NAMES = {
+    US: 'United States',
+    CA: 'Canada',
+    CH: 'Switzerland',
+    DE: 'Germany',
+    FR: 'France',
+    ES: 'Spain',
+    IT: 'Italy',
+  };
+  const FLAG_BASE = 'https://wknd.site/etc.clientlibs/wknd/clientlibs/clientlib-site/resources/images/country-flags/';
+
   const locale = document.createElement('div');
   locale.className = 'nav-locale';
   locale.hidden = true;
   if (localeSrc) {
-    while (localeSrc.firstChild) locale.append(localeSrc.firstChild);
+    const groups = new Map(); // countryCode -> [anchors], insertion order preserved
+    localeSrc.querySelectorAll('a').forEach((a) => {
+      const cc = (a.textContent.trim().split('-')[1] || '').toUpperCase();
+      if (!cc) return;
+      if (!groups.has(cc)) groups.set(cc, []);
+      groups.get(cc).push(a);
+    });
+
+    const list = document.createElement('ul');
+    list.className = 'nav-locale-list';
+    groups.forEach((anchors, cc) => {
+      const country = document.createElement('li');
+      country.className = 'nav-locale-country';
+      country.style.backgroundImage = `url("${FLAG_BASE}${cc}.svg")`;
+
+      const title = document.createElement('span');
+      title.className = 'nav-locale-country-title';
+      title.textContent = COUNTRY_NAMES[cc] || cc;
+
+      const sub = document.createElement('ul');
+      sub.className = 'nav-locale-langs';
+      anchors.forEach((a) => {
+        const li = document.createElement('li');
+        li.append(a);
+        sub.append(li);
+      });
+
+      country.append(title, sub);
+      list.append(country);
+    });
+    locale.append(list);
   }
 
   // Language toggle wires to the locale list. The source used an

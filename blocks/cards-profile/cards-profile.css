@@ -54,19 +54,40 @@
   color: rgb(105 105 105);
 }
 
-/* Social link row */
+/* Social link row — keep the links inline on a single row */
 .cards-profile .cards-profile-card-body p {
-  margin: 12px 0 0;
+  display: inline-block;
+  margin: 12px 8px 0;
+}
+
+/*
+ * About Us page layout.
+ * The profile cards import as separate single-card blocks within one section
+ * (each block is one person, so its inner <ul> only ever holds one card — keep
+ * that inner list single-column so the card fills its cell). The section itself
+ * is laid out as a 2-column grid with the section headings/intro (default
+ * content) spanning the full width, matching the source's contributor grid.
+ */
+main .section.cards-profile-container .cards-profile > ul {
+  grid-template-columns: 1fr;
 }
 
 @media (width >= 600px) {
-  .cards-profile > ul {
-    grid-template-columns: repeat(2, 1fr);
+  main .section.cards-profile-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 362px));
+    justify-content: start;
+    align-items: start;
+    gap: 40px 56px;
   }
-}
 
-@media (width >= 900px) {
-  .cards-profile > ul {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  main .section.cards-profile-container > .default-content-wrapper {
+    grid-column: 1 / -1;
+    max-width: none;
+    margin: 0;
+  }
+
+  main .section.cards-profile-container > .cards-profile-wrapper {
+    margin: 0;
   }
 }
