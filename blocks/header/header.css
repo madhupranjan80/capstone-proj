@@ -314,3 +314,108 @@ header nav[aria-expanded='false'] .nav-search {
     justify-content: flex-end;
   }
 }
+
+/* --- Sign In dialog (opened from the utility bar) ---
+   Mirrors the source modal: 386px dark panel centred in the viewport with a
+   soft grey shadow and no dimmed backdrop. */
+header .nav-signin {
+  box-sizing: border-box;
+  width: 386px;
+  max-width: calc(100vw - 32px);
+  padding: 32px 28px;
+  border: 0;
+  background-color: var(--text-color, rgb(32 32 32));
+  box-shadow: 0 10px 20px rgb(105 105 105);
+  color: #fff;
+  font-family: var(--body-font-family);
+}
+
+header .nav-signin::backdrop {
+  background: transparent;
+}
+
+header .nav-signin h2 {
+  margin: 0 0 13.5px;
+  font-family: var(--heading-font-family);
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 60px;
+  color: #fff;
+}
+
+header .nav-signin h2::after {
+  content: '';
+  display: block;
+  width: 84px;
+  border-bottom: 2px solid var(--cta-color, rgb(255 234 0));
+}
+
+header .nav-signin h3 {
+  margin: 27px 0 13.5px;
+  font-family: var(--heading-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-signin input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 66px;
+  margin: 0 0 11px;
+  padding: 0 16px;
+  border: 1px solid rgb(235 235 235);
+  border-radius: 0;
+  background-color: var(--text-color, rgb(32 32 32));
+  color: #fff;
+  font-size: 14px;
+}
+
+header .nav-signin input::placeholder {
+  color: rgb(150 150 150);
+  text-transform: uppercase;
+}
+
+header .nav-signin input:focus {
+  outline: 2px solid var(--cta-color, rgb(255 234 0));
+  outline-offset: -2px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-signin p {
+  margin: 0 0 9px;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-signin a {
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-signin a:hover {
+  text-decoration: underline;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+header .nav-signin button {
+  width: 180px;
+  padding: 12px 16px;
+  border: 0;
+  background-color: var(--cta-color, rgb(255 234 0));
+  color: var(--text-color, rgb(32 32 32));
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+header .nav-signin hr {
+  margin: 16px 0 0;
+  border: 0;
+  border-top: 2px solid rgb(105 105 105);
+}
