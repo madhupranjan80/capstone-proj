@@ -557,6 +557,7 @@ main .section.sidebar ul {
 
 /* stylelint-disable-next-line no-descending-specificity */
 main .section.sidebar ul li {
+  position: relative;
   min-height: 120px;
   margin: 0 0 18px;
   padding: 8px 16px;
@@ -565,6 +566,7 @@ main .section.sidebar ul li {
   line-height: 18px;
   text-transform: uppercase;
   color: rgb(105 105 105);
+  transition: background-color 0.2s, border-color 0.2s;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -573,6 +575,26 @@ main .section.sidebar ul li a {
   font-size: 18px;
   line-height: 27px;
   color: var(--text-color);
+}
+
+/* The whole item is the click target (as on the source): stretch the title
+   link over the card. On hover/focus the card turns yellow, the left rule
+   goes dark and the title stays un-underlined. */
+main .section.sidebar ul li a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+main .section.sidebar ul li:hover,
+main .section.sidebar ul li:focus-within {
+  background-color: var(--cta-color, rgb(255 234 0));
+  border-left-color: var(--text-color, rgb(32 32 32));
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.sidebar ul li a:hover {
+  text-decoration: none;
 }
 
 @media (width >= 900px) {

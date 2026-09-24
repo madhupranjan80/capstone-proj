@@ -116,7 +116,7 @@ var CustomImportScript = (() => {
 
   // tools/importer/transformers/wknd-share.js
   var PINTEREST_HREF = "https://www.pinterest.com/pin/create/button/";
-  var SHARE_HEADING_RE = /share this (adventure|story)/i;
+  var SHARE_HEADING_RE = /share this adventure/i;
   function transform3(hookName, element, payload) {
     if (hookName !== "beforeTransform") return;
     const doc = element.ownerDocument;
