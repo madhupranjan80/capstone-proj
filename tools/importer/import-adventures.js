@@ -9,6 +9,7 @@ import tabsContentParser from './parsers/tabs-content.js';
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/wknd-cleanup.js';
 import sectionsTransformer from './transformers/wknd-sections.js';
+import shareTransformer from './transformers/wknd-share.js';
 
 // PARSER REGISTRY
 const parsers = {
@@ -77,6 +78,7 @@ const PAGE_TEMPLATE = {
 // TRANSFORMER REGISTRY
 const transformers = [
   cleanupTransformer,
+  shareTransformer,
   ...(PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [sectionsTransformer] : []),
 ];
 
