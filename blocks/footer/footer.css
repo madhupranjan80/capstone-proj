@@ -53,16 +53,21 @@ footer .footer-nav li a {
   text-transform: uppercase;
 }
 
-/* Follow Us + social icons — right-aligned to match the source footer */
+/* Follow Us + social icons — right-aligned, with the "FOLLOW US" label sitting
+   on the same row as the icon tiles (to their left), as on the source footer. */
 footer .footer-social {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
 }
 
 footer .footer-social h4 {
-  margin: 0 0 12px;
-  font-family: var(--heading-font-family);
-  font-weight: 400;
-  font-size: 20px;
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
   text-transform: uppercase;
   color: rgb(235 235 235);
 }
