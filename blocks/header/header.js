@@ -85,11 +85,6 @@ export default async function decorate(block) {
     while (navSrc.firstChild) navSections.append(navSrc.firstChild);
   }
 
-  // Drop the "Home" link — the source nav is Magazine/Adventures/FAQs/About Us.
-  navSections.querySelectorAll('li').forEach((li) => {
-    if (li.textContent.trim().toLowerCase() === 'home') li.remove();
-  });
-
   // Highlight the nav item for the section the current page belongs to. Match
   // each link's path against the current path and keep the longest prefix match
   // (so /us/en/adventures/<slug> highlights "Adventures"). The site root is
@@ -130,9 +125,16 @@ export default async function decorate(block) {
     while (localeSrc.firstChild) locale.append(localeSrc.firstChild);
   }
 
-  // Language toggle wires to the locale list
-  const langToggle = utility.querySelector('a[href="#langNavToggle"]');
-  if (langToggle) {
+  // Language toggle wires to the locale list. The source used an
+  // `#langNavToggle` anchor, but the imported link carries a real href, so also
+  // match the locale-style label (e.g. "en-US") as a fallback. Only wire it when
+  // there is actually a locale list to reveal.
+  const langToggle = utility.querySelector('a[href="#langNavToggle"]')
+    || [...utility.querySelectorAll('.nav-utility-item a')]
+      .find((a) => /^[a-z]{2}-[a-z]{2}$/i.test(a.textContent.trim()));
+  if (langToggle && locale.children.length) {
+    langToggle.setAttribute('aria-haspopup', 'true');
+    langToggle.setAttribute('aria-expanded', 'false');
     langToggle.addEventListener('click', (e) => {
       e.preventDefault();
       locale.hidden = !locale.hidden;
