@@ -128,7 +128,7 @@ header nav .nav-sections li a {
   display: block;
   padding: 12px 0;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-color);
