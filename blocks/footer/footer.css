@@ -6,7 +6,7 @@ footer {
   font-family: var(--body-font-family);
 }
 
-footer .footer {
+footer .footer-inner {
   max-width: 1200px;
   margin: auto;
   padding: 48px 16px;
@@ -15,12 +15,12 @@ footer .footer {
   gap: 24px;
 }
 
-footer .footer a {
+footer .footer-inner a {
   color: rgb(235 235 235);
   text-decoration: none;
 }
 
-footer .footer a:hover {
+footer .footer-inner a:hover {
   color: #fff;
   text-decoration: underline;
 }
@@ -53,12 +53,17 @@ footer .footer-nav li a {
   text-transform: uppercase;
 }
 
-/* Follow Us + social icons */
+/* Follow Us + social icons — right-aligned to match the source footer */
+footer .footer-social {
+  text-align: right;
+}
+
 footer .footer-social h4 {
   margin: 0 0 12px;
   font-family: var(--heading-font-family);
   font-weight: 400;
   font-size: 20px;
+  text-transform: uppercase;
   color: rgb(235 235 235);
 }
 
@@ -67,6 +72,7 @@ footer .footer-social ul {
   margin: 0;
   padding: 0;
   display: flex;
+  justify-content: flex-end;
   gap: 16px;
 }
 
@@ -113,11 +119,38 @@ footer .footer-legal a {
 }
 
 @media (width >= 900px) {
-  footer .footer {
+  /* Pack brand + nav + social into a single top row (source layout): logo at
+     the left, nav centered, "Follow Us"/social pushed to the right. The legal
+     block stays full-width on its own row below. */
+  footer .footer-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px 40px;
     padding: 48px 32px;
   }
 
   footer .footer-nav ul {
     gap: 28px;
+  }
+
+  footer .footer-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  footer .footer-nav {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  footer .footer-social {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  footer .footer-legal {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }

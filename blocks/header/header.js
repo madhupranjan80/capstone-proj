@@ -85,6 +85,34 @@ export default async function decorate(block) {
     while (navSrc.firstChild) navSections.append(navSrc.firstChild);
   }
 
+  // Drop the "Home" link — the source nav is Magazine/Adventures/FAQs/About Us.
+  navSections.querySelectorAll('li').forEach((li) => {
+    if (li.textContent.trim().toLowerCase() === 'home') li.remove();
+  });
+
+  // Highlight the nav item for the section the current page belongs to. Match
+  // each link's path against the current path and keep the longest prefix match
+  // (so /us/en/adventures/<slug> highlights "Adventures"). The site root is
+  // ignored so it never matches every page.
+  const currentPath = window.location.pathname.replace(/\.html$/, '');
+  let best = null;
+  let bestLen = 0;
+  navSections.querySelectorAll('a').forEach((a) => {
+    let linkPath;
+    try {
+      linkPath = new URL(a.href, window.location.origin).pathname.replace(/\.html$/, '');
+    } catch (e) {
+      return;
+    }
+    if (linkPath === '/' || /\/us\/en\/?$/.test(linkPath)) return; // skip home
+    if ((currentPath === linkPath || currentPath.startsWith(`${linkPath}/`))
+      && linkPath.length > bestLen) {
+      best = a;
+      bestLen = linkPath.length;
+    }
+  });
+  if (best) best.closest('li').classList.add('nav-active');
+
   // --- Search form (built in JS, not in the fragment) ---
   const search = document.createElement('div');
   search.className = 'nav-search';

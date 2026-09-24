@@ -45,6 +45,7 @@ export default async function decorate(block) {
   });
 
   const footer = document.createElement('div');
+  footer.className = 'footer-inner';
   const sections = [...fragment.children];
   const [brandSrc, navSrc, socialSrc, legalSrc] = sections;
 
