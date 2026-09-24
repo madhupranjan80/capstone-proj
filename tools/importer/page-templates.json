@@ -334,10 +334,40 @@
         "https://wknd.site/us/en/magazine/western-australia.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/magazine/arctic-surfing.html",
-      "description": "Magazine article page: editorial content (hero image, article body, byline, related sidebar) — all default content, no blocks.",
+      "description": "Magazine article page: hero image + breadcrumb, article column (title, byline, body, author bio) and a sidebar (share + related articles).",
       "urlPattern": "/us/en/magazine/*",
-      "blocks": [],
-      "sections": []
+      "blocks": [
+        {
+          "name": "author-bio",
+          "instances": [".experiencefragment:has(.cmp-byline)"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "mg1",
+          "name": "Hero image and breadcrumb",
+          "selector": ["main.cmp-layout-container--fixed"],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [".image", ".breadcrumb"]
+        },
+        {
+          "id": "mg2",
+          "name": "Article",
+          "selector": ["main.cmp-layout-container--fixed main.container"],
+          "style": "article",
+          "blocks": ["author-bio"],
+          "defaultContent": [".title", ".contentfragment"]
+        },
+        {
+          "id": "mg3",
+          "name": "Sidebar (share + related articles)",
+          "selector": ["aside.cmp-layoutcontainer--sidebar"],
+          "style": "sidebar",
+          "blocks": [],
+          "defaultContent": [".title", ".sharing", ".list"]
+        }
+      ]
     }
   ]
 }

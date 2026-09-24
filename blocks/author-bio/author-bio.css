@@ -1,0 +1,80 @@
+/* Block: author-bio -- article byline card
+   (source: WKND .cmp-byline + icon-only buttons in the contributor
+   experience fragment on magazine articles). Values from source computed
+   styles at 1440px: grey rule above, 60px round avatar, name Asar 24px,
+   role 12px uppercase grey, dark 48px social tiles. */
+
+.author-bio {
+  margin-top: 40px;
+  padding-top: 64px;
+  border-top: 1px solid rgb(235 235 235);
+}
+
+.author-bio .author-bio-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 25px;
+}
+
+.author-bio .author-bio-image {
+  flex: 0 0 60px;
+  margin-top: 7px;
+  line-height: 0;
+}
+
+.author-bio .author-bio-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-bio .author-bio-text {
+  flex: 1 1 200px;
+}
+
+.author-bio .author-bio-text :is(h2, h3, h4) {
+  margin: 0 0 4px;
+  font-family: var(--heading-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 44px;
+}
+
+.author-bio .author-bio-text p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 30px;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+}
+
+/* social tiles: dark squares with light icons, adjacent */
+.author-bio .author-bio-social {
+  display: flex;
+  flex: 0 0 auto;
+}
+
+.author-bio .author-bio-social p {
+  margin: 0;
+}
+
+.author-bio .author-bio-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: rgb(32 32 32);
+}
+
+.author-bio .author-bio-social svg {
+  width: 18px;
+  height: 18px;
+  fill: rgb(235 235 235);
+}
+
+.author-bio .author-bio-social a:hover svg {
+  fill: #fff;
+}

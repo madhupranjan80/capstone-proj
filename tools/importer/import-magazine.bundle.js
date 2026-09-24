@@ -41,6 +41,43 @@ var CustomImportScript = (() => {
     default: () => import_magazine_default
   });
 
+  // tools/importer/parsers/author-bio.js
+  function parse(element, { document: document2 }) {
+    const byline = element.querySelector(".cmp-byline");
+    if (!byline) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const img = byline.querySelector(".cmp-byline__image img, img");
+    const text = [];
+    const name = byline.querySelector(".cmp-byline__name");
+    if (name && name.textContent.trim()) {
+      const h3 = document2.createElement("h3");
+      h3.textContent = name.textContent.trim();
+      text.push(h3);
+    }
+    const role = byline.querySelector(".cmp-byline__occupations");
+    if (role && role.textContent.trim()) {
+      const p = document2.createElement("p");
+      p.textContent = role.textContent.trim();
+      text.push(p);
+    }
+    const social = [];
+    element.querySelectorAll("a.cmp-button").forEach((a) => {
+      const label = (a.getAttribute("aria-label") || a.textContent).trim();
+      if (!label) return;
+      const p = document2.createElement("p");
+      const link = document2.createElement("a");
+      link.setAttribute("href", a.getAttribute("href") || "#");
+      link.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+      p.append(link);
+      social.push(p);
+    });
+    const cells = [[img || "", text.length ? text : "", social.length ? social : ""]];
+    const block = WebImporter.Blocks.createBlock(document2, { name: "author-bio", cells });
+    element.replaceWith(block);
+  }
+
   // tools/importer/transformers/wknd-cleanup.js
   var H = { before: "beforeTransform", after: "afterTransform" };
   function transform(hookName, element, payload) {
@@ -63,18 +100,146 @@ var CustomImportScript = (() => {
     }
   }
 
+  // tools/importer/transformers/wknd-magazine.js
+  function transform2(hookName, element, payload) {
+    if (hookName !== "beforeTransform") return;
+    element.querySelectorAll(".cmp-contentfragment__title").forEach((el) => el.remove());
+    element.querySelectorAll(".separator, .download").forEach((el) => el.remove());
+    element.querySelectorAll(".cmp-list__item-link").forEach((a) => {
+      const date = a.querySelector(".cmp-list__item-date");
+      if (!date) return;
+      const text = date.textContent.trim();
+      date.remove();
+      if (text) a.after(element.ownerDocument.createTextNode(` ${text}`));
+    });
+  }
+
+  // tools/importer/transformers/wknd-share.js
+  var PINTEREST_HREF = "https://www.pinterest.com/pin/create/button/";
+  var SHARE_HEADING_RE = /share this (adventure|story)/i;
+  function transform3(hookName, element, payload) {
+    if (hookName !== "beforeTransform") return;
+    const doc = element.ownerDocument;
+    const heading = [...element.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((h) => SHARE_HEADING_RE.test(h.textContent));
+    const links = [];
+    element.querySelectorAll(".sharing").forEach((sharing) => {
+      sharing.querySelectorAll('a[href^="http"]').forEach((a) => {
+        const href = a.getAttribute("href") || "";
+        const label = a.textContent.trim();
+        if (href && label) links.push({ href, label });
+      });
+      sharing.remove();
+    });
+    if (!links.length && heading) {
+      links.push({ href: PINTEREST_HREF, label: "Pinterest" });
+    }
+    if (!links.length || !heading) return;
+    const p = doc.createElement("p");
+    links.forEach(({ href, label }, i) => {
+      if (i > 0) p.append(doc.createTextNode(" "));
+      const a = doc.createElement("a");
+      a.setAttribute("href", href);
+      a.textContent = label;
+      p.append(a);
+    });
+    const titleWrapper = heading.closest(".title, .cmp-title") || heading;
+    titleWrapper.after(p);
+  }
+
+  // tools/importer/transformers/wknd-sections.js
+  var SECTION_MARKER_ATTR = "data-excat-section-id";
+  function querySection(root, selectors) {
+    for (const sel of selectors) {
+      const el = root.querySelector(sel);
+      if (el) return el;
+    }
+    return null;
+  }
+  function transform4(hookName, element, payload) {
+    const sections = payload.template.sections || [];
+    if (hookName === "beforeTransform") {
+      for (let i = sections.length - 1; i >= 0; i -= 1) {
+        const section = sections[i];
+        if (i === 0 && !section.style) continue;
+        const sectionEl = querySection(element, section.selector);
+        if (!sectionEl) continue;
+        const hr = document.createElement("hr");
+        if (section.style) hr.setAttribute(SECTION_MARKER_ATTR, section.id);
+        sectionEl.before(hr);
+      }
+    }
+    if (hookName === "afterTransform") {
+      for (let i = sections.length - 1; i >= 0; i -= 1) {
+        const section = sections[i];
+        if (!section.style) continue;
+        const marker = element.querySelector(`[${SECTION_MARKER_ATTR}="${section.id}"]`);
+        const anchor = marker || querySection(element, section.selector);
+        if (!anchor) continue;
+        const metadataBlock = WebImporter.Blocks.createBlock(document, {
+          name: "Section Metadata",
+          cells: { style: section.style }
+        });
+        anchor.after(metadataBlock);
+        if (marker) {
+          marker.removeAttribute(SECTION_MARKER_ATTR);
+          if (i === 0) marker.remove();
+        }
+      }
+    }
+  }
+
   // tools/importer/import-magazine.js
+  var parsers = {
+    "author-bio": parse
+  };
   var PAGE_TEMPLATE = {
     name: "magazine",
-    description: "Magazine article page: editorial content (hero image, article body, byline, related sidebar) \u2014 all default content, no blocks.",
+    description: "Magazine article page: hero image + breadcrumb, article column (title, byline, body, author bio) and a sidebar (share + related articles).",
     urls: [
-      "https://wknd.site/us/en/magazine/arctic-surfing.html"
+      "https://wknd.site/us/en/magazine/arctic-surfing.html",
+      "https://wknd.site/us/en/magazine/guide-la-skateparks.html",
+      "https://wknd.site/us/en/magazine/san-diego-surf.html",
+      "https://wknd.site/us/en/magazine/ski-touring.html",
+      "https://wknd.site/us/en/magazine/western-australia.html"
     ],
-    blocks: [],
-    sections: []
+    blocks: [
+      {
+        name: "author-bio",
+        instances: [".experiencefragment:has(.cmp-byline)"]
+      }
+    ],
+    sections: [
+      {
+        id: "mg1",
+        name: "Hero image and breadcrumb",
+        selector: ["main.cmp-layout-container--fixed"],
+        style: null,
+        blocks: [],
+        defaultContent: [".image", ".breadcrumb"]
+      },
+      {
+        id: "mg2",
+        name: "Article",
+        selector: ["main.cmp-layout-container--fixed main.container"],
+        style: "article",
+        blocks: ["author-bio"],
+        defaultContent: [".title", ".contentfragment"]
+      },
+      {
+        id: "mg3",
+        name: "Sidebar (share + related articles)",
+        selector: ["aside.cmp-layoutcontainer--sidebar"],
+        style: "sidebar",
+        blocks: [],
+        defaultContent: [".title", ".sharing", ".list"]
+      }
+    ]
   };
   var transformers = [
-    transform
+    transform,
+    transform2,
+    transform3,
+    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform4] : []
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), {
@@ -88,21 +253,59 @@ var CustomImportScript = (() => {
       }
     });
   }
+  function findBlocksOnPage(document2, template) {
+    const pageBlocks = [];
+    const seen = /* @__PURE__ */ new Set();
+    template.blocks.forEach((blockDef) => {
+      blockDef.instances.forEach((selector) => {
+        const elements = document2.querySelectorAll(selector);
+        if (elements.length === 0) {
+          console.warn(`Block "${blockDef.name}" selector not found: ${selector}`);
+        }
+        elements.forEach((element) => {
+          if (seen.has(element)) return;
+          seen.add(element);
+          pageBlocks.push({
+            name: blockDef.name,
+            selector,
+            element,
+            section: blockDef.section || null
+          });
+        });
+      });
+    });
+    console.log(`Found ${pageBlocks.length} block instances on page`);
+    return pageBlocks;
+  }
   var import_magazine_default = {
     transform: (payload) => {
       const {
-        document,
+        document: document2,
         url,
         html,
         params
       } = payload;
-      const main = document.body;
+      const main = document2.body;
       executeTransformers("beforeTransform", main, payload);
+      const pageBlocks = findBlocksOnPage(document2, PAGE_TEMPLATE);
+      pageBlocks.forEach((block) => {
+        if (!block.element.parentNode) return;
+        const parser = parsers[block.name];
+        if (parser) {
+          try {
+            parser(block.element, { document: document2, url, params });
+          } catch (e) {
+            console.error(`Failed to parse ${block.name} (${block.selector}):`, e);
+          }
+        } else {
+          console.warn(`No parser found for block: ${block.name}`);
+        }
+      });
       executeTransformers("afterTransform", main, payload);
-      const hr = document.createElement("hr");
+      const hr = document2.createElement("hr");
       main.appendChild(hr);
-      WebImporter.rules.createMetadata(main, document);
-      WebImporter.rules.transformBackgroundImages(main, document);
+      WebImporter.rules.createMetadata(main, document2);
+      WebImporter.rules.transformBackgroundImages(main, document2);
       WebImporter.rules.adjustImageUrls(main, url, params.originalURL);
       const rawPath = new URL(params.originalURL).pathname.replace(/\/$/, "").replace(/\.html?$/, "");
       const path = WebImporter.FileUtils.sanitizePath(rawPath === "" ? "/index" : rawPath);
@@ -110,9 +313,9 @@ var CustomImportScript = (() => {
         element: main,
         path,
         report: {
-          title: document.title,
+          title: document2.title,
           template: PAGE_TEMPLATE.name,
-          blocks: []
+          blocks: pageBlocks.map((b) => b.name)
         }
       }];
     }

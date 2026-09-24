@@ -28,7 +28,8 @@
  * per-page value is needed. The empty .sharing widget is removed.
  */
 const PINTEREST_HREF = 'https://www.pinterest.com/pin/create/button/';
-const SHARE_HEADING_RE = /share this adventure/i;
+// "Share this Adventure" (adventure pages) / "Share this Story" (magazine articles)
+const SHARE_HEADING_RE = /share this (adventure|story)/i;
 
 export default function transform(hookName, element, payload) {
   if (hookName !== 'beforeTransform') return;
