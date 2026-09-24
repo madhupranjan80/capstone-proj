@@ -115,35 +115,9 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/transformers/wknd-share.js
-  var PINTEREST_HREF = "https://www.pinterest.com/pin/create/button/";
-  var SHARE_HEADING_RE = /share this adventure/i;
   function transform3(hookName, element, payload) {
     if (hookName !== "beforeTransform") return;
-    const doc = element.ownerDocument;
-    const heading = [...element.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((h) => SHARE_HEADING_RE.test(h.textContent));
-    const links = [];
-    element.querySelectorAll(".sharing").forEach((sharing) => {
-      sharing.querySelectorAll('a[href^="http"]').forEach((a) => {
-        const href = a.getAttribute("href") || "";
-        const label = a.textContent.trim();
-        if (href && label) links.push({ href, label });
-      });
-      sharing.remove();
-    });
-    if (!links.length && heading) {
-      links.push({ href: PINTEREST_HREF, label: "Pinterest" });
-    }
-    if (!links.length || !heading) return;
-    const p = doc.createElement("p");
-    links.forEach(({ href, label }, i) => {
-      if (i > 0) p.append(doc.createTextNode(" "));
-      const a = doc.createElement("a");
-      a.setAttribute("href", href);
-      a.textContent = label;
-      p.append(a);
-    });
-    const titleWrapper = heading.closest(".title, .cmp-title") || heading;
-    titleWrapper.after(p);
+    element.querySelectorAll(".sharing").forEach((sharing) => sharing.remove());
   }
 
   // tools/importer/transformers/wknd-sections.js
