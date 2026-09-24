@@ -29,15 +29,22 @@ header nav {
   font-family: var(--body-font-family);
 }
 
-/* --- Utility bar (top-right: sign-in + language) --- */
+/* --- Utility bar (top-right: sign-in + language) ---
+   Dark strip across the very top of the page, matching the source. It is
+   full-bleed (breaks out of the centered nav grid) with its content aligned to
+   the same 1200px column as the main bar via right padding. */
 header nav .nav-utility {
   grid-area: utility;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 20px;
-  padding: 8px 0;
+  padding: 8px 16px;
   position: relative;
+  background-color: var(--text-color, rgb(32 32 32));
+
+  /* full-bleed: escape the nav's 16px side padding */
+  margin: 0 -16px;
 }
 
 header nav .nav-utility-item a {
@@ -45,12 +52,12 @@ header nav .nav-utility-item a {
   font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--text-color);
+  color: rgb(235 235 235);
   text-decoration: none;
 }
 
 header nav .nav-utility-item a:hover {
-  color: var(--link-color);
+  color: #fff;
 }
 
 /* Language dropdown list */
@@ -130,6 +137,12 @@ header nav .nav-sections li a {
 
 header nav .nav-sections li a:hover {
   color: var(--link-color);
+}
+
+/* Active section: yellow highlight pill matching the source nav. */
+header nav .nav-sections li.nav-active a {
+  background-color: var(--cta-color, rgb(255 234 0));
+  color: var(--text-color);
 }
 
 /* --- Search --- */
@@ -229,6 +242,12 @@ header nav[aria-expanded='false'] .nav-search {
     padding: 0 32px;
   }
 
+  /* keep the dark utility strip full-bleed against the wider desktop padding */
+  header nav .nav-utility {
+    margin: 0 -32px;
+    padding: 8px 32px;
+  }
+
   header nav .nav-hamburger {
     display: none;
   }
@@ -247,6 +266,10 @@ header nav[aria-expanded='false'] .nav-search {
 
   header nav .nav-sections li a {
     padding: 8px 0;
+  }
+
+  header nav .nav-sections li.nav-active a {
+    padding: 8px 16px;
   }
 
   header nav .nav-brand img {
