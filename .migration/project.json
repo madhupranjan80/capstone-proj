@@ -6,6 +6,12 @@
       "previewSite": "capstone-proj",
       "contentHostUrl": "https://content.da.live/madhupranjan80/capstone-proj/",
       "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    },
+    "capstone-proj": {
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json",
+      "previewOrg": "madhupranjan80",
+      "previewSite": "capstone-proj",
+      "contentHostUrl": "https://content.da.live/madhupranjan80/capstone-proj/"
     }
   }
 }
