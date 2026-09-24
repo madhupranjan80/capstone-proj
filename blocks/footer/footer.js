@@ -53,10 +53,14 @@ export default async function decorate(block) {
 
   if (socialSrc) {
     socialSrc.className = 'footer-social';
-    // Replace social link text with SVG glyphs based on the href.
+    // Replace social link text with SVG glyphs. Match on the link label first
+    // (reliable: "Facebook"/"Twitter"/"Instagram") and fall back to the href,
+    // since imported hrefs may point to the site root rather than the network.
     socialSrc.querySelectorAll('a').forEach((a) => {
+      const label = a.textContent.trim().toLowerCase();
       const href = (a.getAttribute('href') || '').toLowerCase();
-      const key = Object.keys(SOCIAL_ICONS).find((k) => href.includes(k));
+      const key = Object.keys(SOCIAL_ICONS)
+        .find((k) => label.includes(k) || href.includes(k));
       if (key) {
         a.setAttribute('aria-label', a.textContent.trim());
         a.innerHTML = SOCIAL_ICONS[key];
