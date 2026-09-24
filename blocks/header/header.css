@@ -71,17 +71,17 @@ header nav .nav-utility-item a:hover {
   color: #fff;
 }
 
-/* Language dropdown list */
+/* Language dropdown: a dark panel of country groups (flag + name) each listing
+   its locale links inline, matching the source language navigation. */
 header nav .nav-locale {
   position: absolute;
   top: 100%;
   right: 0;
   z-index: 10;
-  min-width: 120px;
+  min-width: 300px;
   margin: 0;
-  padding: 8px 0;
-  background-color: var(--background-color);
-  border: 1px solid #dadada;
+  padding: 16px 20px;
+  background-color: var(--text-color, rgb(32 32 32));
 }
 
 header nav .nav-locale ul {
@@ -90,17 +90,38 @@ header nav .nav-locale ul {
   padding: 0;
 }
 
+/* Country row: flag on the left, name + locale links stacked to its right. */
+header nav .nav-locale .nav-locale-country {
+  padding: 6px 0 6px 34px;
+  background-repeat: no-repeat;
+  background-position: left 6px;
+  background-size: 22px auto;
+}
+
+header nav .nav-locale .nav-locale-country-title {
+  display: block;
+  font-size: 12px;
+  color: rgb(235 235 235);
+}
+
+header nav .nav-locale .nav-locale-langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
 /* stylelint-disable-next-line no-descending-specificity */
 header nav .nav-locale li a {
-  display: block;
-  padding: 6px 16px;
-  font-size: 13px;
-  color: var(--text-color);
+  display: inline-block;
+  padding: 2px 0;
+  font-size: 14px;
+  color: rgb(247 247 247);
   text-decoration: none;
 }
 
 header nav .nav-locale li a:hover {
-  background-color: var(--light-color);
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* --- Brand / logo --- */
