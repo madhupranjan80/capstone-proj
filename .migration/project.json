@@ -3,8 +3,8 @@
   "sites": {
     "capstone-wknd": {
       "previewOrg": "madhupranjan80",
-      "previewSite": "capstone-wknd",
-      "contentHostUrl": "https://content.da.live/madhupranjan80/capstone-wknd/",
+      "previewSite": "capstone-proj",
+      "contentHostUrl": "https://content.da.live/madhupranjan80/capstone-proj/",
       "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
     }
   }
