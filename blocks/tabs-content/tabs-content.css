@@ -1,0 +1,53 @@
+.tabs-content .tabs-content-list {
+  display: flex;
+  gap: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.tabs-content .tabs-content-list button {
+  flex: 0 0 max-content;
+  margin: 0;
+  border: 1px solid #dadada;
+  border-radius: 0;
+  padding: 12px 20px;
+  background-color: var(--light-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: unset;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: initial;
+  text-overflow: unset;
+  overflow: unset;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.tabs-content .tabs-content-list button p {
+  margin: 0;
+}
+
+.tabs-content .tabs-content-list button[aria-selected='true'] {
+  border-bottom: 1px solid var(--background-color);
+  background-color: var(--background-color);
+  cursor: initial;
+}
+
+.tabs-content .tabs-content-panel {
+  margin-top: -1px;
+  padding: 24px 0;
+  overflow: auto;
+}
+
+.tabs-content .tabs-content-panel[aria-hidden='true'] {
+  display: none;
+}
+
+.tabs-content .tabs-content-panel img {
+  width: 100%;
+  height: auto;
+}

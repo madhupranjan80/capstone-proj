@@ -1,0 +1,25 @@
+{
+  "variantName": "tabs-content",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "normal",
+    "purpose": "tabbed-content",
+    "structure": "tab labels + switchable content panels"
+  },
+  "contentPattern": "One row per tab. The first cell of each row is the tab label; the rest of the row is the panel content (text and images). The first tab is shown by default; clicking a tab reveals its panel.",
+  "usage": "Tabbed content area used on adventure detail pages (e.g. Overview / Itinerary / What to Bring).",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": [
+    "tabs-content"
+  ],
+  "usageTracking": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
+}

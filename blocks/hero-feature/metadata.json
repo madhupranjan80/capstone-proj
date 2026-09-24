@@ -1,0 +1,26 @@
+{
+  "variantName": "hero-feature",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "feature-banner",
+    "imagePattern": "full-bleed",
+    "structure": "background image + heading + description + cta"
+  },
+  "contentPattern": "A full-bleed background image with a heading, description, and CTA link. The copy is wrapped in a white content card overlaid at the bottom-left of the banner.",
+  "usage": "Single full-bleed feature banner promoting one adventure/trip, with an overlaid white content card.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": [
+    "hero-feature"
+  ],
+  "usageTracking": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
+}

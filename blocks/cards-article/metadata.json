@@ -1,0 +1,26 @@
+{
+  "variantName": "cards-article",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "grid-4",
+    "purpose": "article-teasers",
+    "imagePattern": "top-image",
+    "structure": "image + title + description"
+  },
+  "contentPattern": "One row per card. Each card has an image cell followed by a body cell containing a bold title and a short description. Rendered as a responsive grid of teaser cards.",
+  "usage": "Grid of article/destination teaser cards (image on top, title, short description). Reused for 'Recent Articles' and 'Where do you want to go' sections.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": [
+    "cards-article"
+  ],
+  "usageTracking": {
+    "pagesUsing": [
+      "/us/en/adventures"
+    ],
+    "reuseCount": 1,
+    "lastUsed": "2026-09-21"
+  }
+}

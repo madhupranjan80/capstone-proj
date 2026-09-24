@@ -1,0 +1,16 @@
+{
+  "variantName": "columns-details",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "attribute-list",
+    "structure": "repeating label + value pairs"
+  },
+  "contentPattern": "One row per attribute. First cell is the label (e.g. 'Activity'), second cell is the value (e.g. 'Surfing'). Rendered as a vertical spec list with a left accent rule.",
+  "usage": "Adventure detail spec sidebar listing attributes like Activity, Trip Length, Group Size, Difficulty, Price.",
+  "canonicalModelStructure": "standalone",
+  "options": [],
+  "memberVariantIds": ["columns-details"]
+}
