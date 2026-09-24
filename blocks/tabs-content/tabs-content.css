@@ -51,3 +51,75 @@
   width: 100%;
   height: auto;
 }
+
+/*
+ * Image-list card grid panels (adventures landing page).
+ * Each panel that contains an image card list renders as a responsive card grid.
+ * Scoped with :has(li picture) so plain bullet lists in prose panels
+ * (e.g. the "What to Bring" detail-page list) are NOT turned into a grid.
+ */
+.tabs-content .tabs-content-panel ul:has(li picture) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 14px;
+}
+
+.tabs-content .tabs-content-panel ul:has(li picture) > li {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+}
+
+/* card image: matches the source teaser grid (13/10, borderless, cover) */
+.tabs-content .tabs-content-panel ul:has(li picture) > li picture {
+  display: block;
+  line-height: 0;
+}
+
+.tabs-content .tabs-content-panel ul:has(li picture) > li img {
+  width: 100%;
+  aspect-ratio: 13 / 10;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* card title: dark, semibold, uppercase, body font */
+.tabs-content .tabs-content-panel ul:has(li picture) > li h3 {
+  margin: 9px 0 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+.tabs-content .tabs-content-panel ul:has(li picture) > li h3 a:any-link {
+  color: var(--text-color);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* card description: grey, uppercase, single line truncated with ellipsis */
+.tabs-content .tabs-content-panel ul:has(li picture) > li p {
+  margin: 16px 0 0;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* desktop: four columns matching the source grid */
+@media (width >= 900px) {
+  .tabs-content .tabs-content-panel ul:has(li picture) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

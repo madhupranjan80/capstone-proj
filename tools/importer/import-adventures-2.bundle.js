@@ -75,6 +75,54 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/tabs-content.js
+  function buildImageListCards(panel, document2) {
+    let items = Array.from(panel.querySelectorAll("li.cmp-image-list__item, .cmp-image-list__item"));
+    if (!items.length) {
+      items = Array.from(panel.querySelectorAll("article.cmp-image-list__item-content, .cmp-image-list__item-content"));
+    }
+    if (!items.length) return null;
+    const ul = document2.createElement("ul");
+    items.forEach((item) => {
+      const li = document2.createElement("li");
+      const img = item.querySelector(".cmp-image-list__item-image img, img");
+      if (img) li.append(img);
+      const titleLink = item.querySelector("a.cmp-image-list__item-title-link, .cmp-image-list__item-title-link");
+      const titleSpan = item.querySelector(".cmp-image-list__item-title");
+      const titleText = (titleSpan ? titleSpan.textContent : titleLink ? titleLink.textContent : "").trim();
+      if (titleText) {
+        const heading = document2.createElement("h3");
+        const href = titleLink ? titleLink.getAttribute("href") : null;
+        if (href) {
+          const a = document2.createElement("a");
+          a.setAttribute("href", href);
+          a.textContent = titleText;
+          heading.append(a);
+        } else {
+          heading.textContent = titleText;
+        }
+        li.append(heading);
+      }
+      const descSpan = item.querySelector(".cmp-image-list__item-description");
+      const descText = descSpan ? descSpan.textContent.trim() : "";
+      if (descText) {
+        const p = document2.createElement("p");
+        p.textContent = descText;
+        li.append(p);
+      }
+      if (img || titleText || descText) ul.append(li);
+    });
+    return ul.children.length ? ul : null;
+  }
+  function buildProseContent(panel) {
+    const contentRoot = panel.querySelector(".cmp-contentfragment__elements") || panel.querySelector(".cmp-contentfragment") || panel;
+    contentRoot.querySelectorAll(".cmp-contentfragment__title").forEach((h) => h.remove());
+    return Array.from(
+      contentRoot.querySelectorAll("p, ul, ol, h2, h3, h4, h5, h6, img")
+    ).filter((node) => {
+      if (node.tagName === "IMG") return true;
+      return node.textContent.trim().length > 0;
+    });
+  }
   function parse2(element, { document: document2 }) {
     const tabs = Array.from(element.querySelectorAll(".cmp-tabs__tab"));
     const panels = Array.from(element.querySelectorAll(".cmp-tabs__tabpanel"));
@@ -82,17 +130,14 @@ var CustomImportScript = (() => {
     tabs.forEach((tab, i) => {
       const label = tab.textContent.trim();
       const panel = panels[i];
-      const contentCell = [];
+      let contentCell = [];
       if (panel) {
-        const contentRoot = panel.querySelector(".cmp-contentfragment__elements") || panel.querySelector(".cmp-contentfragment") || panel;
-        contentRoot.querySelectorAll(".cmp-contentfragment__title").forEach((h) => h.remove());
-        const nodes = Array.from(
-          contentRoot.querySelectorAll("p, ul, ol, h2, h3, h4, h5, h6, img")
-        ).filter((node) => {
-          if (node.tagName === "IMG") return true;
-          return node.textContent.trim().length > 0;
-        });
-        contentCell.push(...nodes);
+        if (panel.querySelector(".cmp-image-list__item")) {
+          const cardGrid = buildImageListCards(panel, document2);
+          if (cardGrid) contentCell = [cardGrid];
+        } else {
+          contentCell = buildProseContent(panel);
+        }
       }
       if (label) {
         cells.push([label, contentCell.length ? contentCell : ""]);
