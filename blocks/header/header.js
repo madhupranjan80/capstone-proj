@@ -85,6 +85,11 @@ export default async function decorate(block) {
     while (navSrc.firstChild) navSections.append(navSrc.firstChild);
   }
 
+  // Drop the "Home" link — the source nav is Magazine/Adventures/FAQs/About Us.
+  navSections.querySelectorAll('li').forEach((li) => {
+    if (li.textContent.trim().toLowerCase() === 'home') li.remove();
+  });
+
   // Highlight the nav item for the section the current page belongs to. Match
   // each link's path against the current path and keep the longest prefix match
   // (so /us/en/adventures/<slug> highlights "Adventures"). The site root is

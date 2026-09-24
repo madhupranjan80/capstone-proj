@@ -56,6 +56,17 @@ header nav .nav-utility-item a {
   text-decoration: none;
 }
 
+/* Country flag on the language toggle (source used a CSS background flag on the
+   toggle link; the migrated content only carries the "en-US" text). The toggle
+   is marked with aria-haspopup by the header script. */
+header nav .nav-utility-item a[aria-haspopup='true'] {
+  padding-left: 30px;
+  background-image: url('https://wknd.site/etc.clientlibs/wknd/clientlibs/clientlib-site/resources/images/country-flags/US.svg');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 20px;
+}
+
 header nav .nav-utility-item a:hover {
   color: #fff;
 }
