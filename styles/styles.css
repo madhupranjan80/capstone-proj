@@ -436,3 +436,17 @@ main:has(> .columns-details-container) > .section:first-child .default-content-w
 main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li a:hover {
   text-decoration: underline;
 }
+
+/*
+ * "Share this Adventure" label (adventure detail pages).
+ * It imports as an <h5>, so the global heading rule renders it in the Asar
+ * serif heading font at 18px. On the source it is a small uppercase
+ * Source Sans Pro label, so restyle it to match. Scoped by its id.
+ */
+#share-this-adventure {
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
