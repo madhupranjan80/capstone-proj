@@ -450,3 +450,16 @@ main:has(> .columns-details-container) > .section:first-child .default-content-w
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
+
+/*
+ * "underline" section style (authorable via Section Metadata: Style = underline).
+ * Mirrors the source's cmp-title--underline: a short 84px yellow rule under the
+ * section heading (e.g. "All Articles", "Members Only" on the magazine page).
+ */
+main .section.underline .default-content-wrapper h2::after {
+  content: '';
+  display: block;
+  width: 84px;
+  margin-top: 13.5px;
+  border-bottom: 2px solid var(--cta-color, rgb(255 234 0));
+}

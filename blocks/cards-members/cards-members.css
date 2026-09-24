@@ -1,0 +1,95 @@
+/* Block: cards-members -- "Members Only" locked teasers
+   (source: WKND .teaser.cmp-teaser--secure on /us/en/magazine.html).
+   Values extracted from source computed styles at 1440px: 360px cards,
+   text above a 200px image, whole card faded to 65%, yellow lock badge. */
+
+.cards-members > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 28px;
+}
+
+.cards-members > ul > li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Source renders the text first, then the image beneath it. */
+.cards-members .cards-members-card-body {
+  order: 1;
+  opacity: 0.65;
+}
+
+.cards-members .cards-members-card-image {
+  order: 2;
+  margin-top: 21px;
+  line-height: 0;
+  opacity: 0.65;
+}
+
+.cards-members .cards-members-card-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Lock badge: yellow top-left triangle with a black padlock, sitting over the
+   start of the title (as on the source). Kept at full opacity. */
+.cards-members > ul > li::before,
+.cards-members > ul > li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+}
+
+.cards-members > ul > li::before {
+  background-image: linear-gradient(to left top, transparent 50%, var(--cta-color, rgb(255 234 0)) 50%);
+}
+
+.cards-members > ul > li::after {
+  background: no-repeat 12px 12px / 24px 24px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 9V7A5 5 0 0 0 7 7v2a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2ZM9 7a3 3 0 0 1 6 0v2H9Z'/%3E%3C/svg%3E");
+}
+
+/* title */
+.cards-members .cards-members-card-body h3 {
+  margin: 9px 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-transform: uppercase;
+  color: rgb(32 32 32);
+}
+
+/* description */
+.cards-members .cards-members-card-body p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 25px;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+}
+
+/* "Read More" label: grey box (not a link — the content is sign-in gated) */
+.cards-members .cards-members-card-body p:last-child:not(:first-of-type) {
+  display: inline-block;
+  margin-top: 27px;
+  padding: 7px 14px;
+  line-height: 21px;
+  background-color: rgb(235 235 235);
+}
+
+@media (width >= 600px) {
+  .cards-members > ul {
+    grid-template-columns: repeat(2, minmax(0, 360px));
+  }
+}

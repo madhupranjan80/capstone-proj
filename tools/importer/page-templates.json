@@ -6,8 +6,7 @@
     {
       "name": "about-us",
       "urls": [
-        "https://wknd.site/us/en/about-us.html",
-        "https://wknd.site/us/en/magazine.html"
+        "https://wknd.site/us/en/about-us.html"
       ],
       "representativeUrl": "https://wknd.site/us/en/about-us.html",
       "description": "About Us page: title, intro, and profile-card grids (Contributors, WKND Guides).",
@@ -26,6 +25,55 @@
           "style": null,
           "blocks": ["cards-profile"],
           "defaultContent": [".title"]
+        }
+      ]
+    },
+    {
+      "name": "magazine-landing",
+      "urls": [
+        "https://wknd.site/us/en/magazine.html"
+      ],
+      "representativeUrl": "https://wknd.site/us/en/magazine.html",
+      "description": "Magazine landing page: title, featured article teaser, \"All Articles\" card grid, and \"Members Only\" locked teasers.",
+      "urlPattern": "/us/en/magazine",
+      "blocks": [
+        {
+          "name": "columns-featured",
+          "instances": [".teaser.cmp-teaser--featured"]
+        },
+        {
+          "name": "cards-article",
+          "instances": [".image-list.list"]
+        },
+        {
+          "name": "cards-members",
+          "instances": [".teaser.cmp-teaser--secure"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "ml1",
+          "name": "Page title and featured article",
+          "selector": ["main.cmp-layout-container--fixed"],
+          "style": null,
+          "blocks": ["columns-featured"],
+          "defaultContent": [".title"]
+        },
+        {
+          "id": "ml2",
+          "name": "All Articles",
+          "selector": [".title.cmp-title--underline"],
+          "style": "underline",
+          "blocks": ["cards-article"],
+          "defaultContent": [".title.cmp-title--underline"]
+        },
+        {
+          "id": "ml3",
+          "name": "Members Only",
+          "selector": [".title.cmp-title--underline ~ .title.cmp-title--underline"],
+          "style": "underline",
+          "blocks": ["cards-members"],
+          "defaultContent": [".title.cmp-title--underline", ".text"]
         }
       ]
     },
