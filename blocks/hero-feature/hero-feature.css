@@ -80,8 +80,21 @@
   }
 
   .hero-feature .hero-feature-content {
-    max-width: 1200px;
+    /* Source card: 1192px wide, centered (124px side gutters at 1440),
+     * overlapping the image's lower edge by 180px. */
+    max-width: 1192px;
     margin: -180px auto 0;
-    padding: 24px 28px;
+
+    /* 18px top inset applied as padding (not h2 margin) so it can't collapse
+     * out of the card; 76px bottom whitespace per source card (h=180). */
+    padding: 18px 28px 76px;
+  }
+
+  .hero-feature .hero-feature-content h2 {
+    margin: 0;
+  }
+
+  .hero-feature .hero-feature-content p {
+    margin: 0;
   }
 }
