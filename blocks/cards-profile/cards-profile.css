@@ -65,8 +65,9 @@
  * The profile cards import as separate single-card blocks within one section
  * (each block is one person, so its inner <ul> only ever holds one card — keep
  * that inner list single-column so the card fills its cell). The section itself
- * is laid out as a 2-column grid with the section headings/intro (default
- * content) spanning the full width, matching the source's contributor grid.
+ * is laid out as a responsive card grid with the section headings/intro
+ * (default content) spanning the full width, matching the source: 4 columns on
+ * desktop, 2 on tablet, 1 on mobile.
  */
 main .section.cards-profile-container .cards-profile > ul {
   grid-template-columns: 1fr;
@@ -75,10 +76,9 @@ main .section.cards-profile-container .cards-profile > ul {
 @media (width >= 600px) {
   main .section.cards-profile-container {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 362px));
-    justify-content: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
-    gap: 40px 56px;
+    gap: 48px 32px;
   }
 
   main .section.cards-profile-container > .default-content-wrapper {
@@ -89,5 +89,11 @@ main .section.cards-profile-container .cards-profile > ul {
 
   main .section.cards-profile-container > .cards-profile-wrapper {
     margin: 0;
+  }
+}
+
+@media (width >= 900px) {
+  main .section.cards-profile-container {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
