@@ -73,27 +73,31 @@ footer .footer-social ul {
   padding: 0;
   display: flex;
   justify-content: flex-end;
-  gap: 16px;
+
+  /* tiles sit adjacent (no gap), forming one bar like the source */
+  gap: 0;
 }
 
+/* Each social link is a light square tile with a dark icon (matching source). */
 /* stylelint-disable-next-line no-descending-specificity */
 footer .footer-social li a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 48px;
+  height: 48px;
+  background-color: rgb(235 235 235);
+  transition: background-color 0.2s;
 }
 
 footer .footer-social svg {
-  width: 22px;
-  height: 22px;
-  fill: rgb(235 235 235);
-  transition: fill 0.2s;
+  width: 18px;
+  height: 18px;
+  fill: rgb(32 32 32);
 }
 
-footer .footer-social li a:hover svg {
-  fill: #fff;
+footer .footer-social li a:hover {
+  background-color: #fff;
 }
 
 /* Legal / copyright */
