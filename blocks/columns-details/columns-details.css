@@ -3,31 +3,31 @@
   flex-direction: column;
 }
 
-/* Each label/value pair, with a left accent rule like the source */
+/* Each label/value pair, with a light-grey left rule like the source
+   (.cmp-contentfragment__element: 5px rgb(235) border, 22.5px apart). */
 .columns-details .columns-details-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 0 12px 20px;
-  border-left: 2px solid var(--cta-color, rgb(255 234 0));
+  padding: 18px;
+  border-left: 5px solid rgb(235 235 235);
 }
 
 .columns-details .columns-details-item + .columns-details-item {
-  margin-top: 8px;
+  margin-top: 22.5px;
 }
 
 .columns-details .columns-details-label {
   font-family: var(--body-font-family);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: 400;
   text-transform: uppercase;
   color: rgb(105 105 105);
 }
 
 .columns-details .columns-details-value {
   font-family: var(--body-font-family);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   color: var(--text-color);

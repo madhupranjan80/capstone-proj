@@ -5,26 +5,28 @@
   overflow-x: auto;
 }
 
+/* Flat text tabs (source .cmp-tabs): inactive = plain dark text, active =
+   solid dark tab with white text; no borders, 38px tall. */
 .tabs-content .tabs-content-list button {
   flex: 0 0 max-content;
   margin: 0;
-  border: 1px solid #dadada;
+  border: 0;
   border-radius: 0;
-  padding: 12px 20px;
-  background-color: var(--light-color);
+  padding: 8px 16px;
+  background-color: transparent;
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: 14px;
   font-weight: 400;
-  line-height: unset;
-  letter-spacing: 0.05em;
+  line-height: 22px;
+  letter-spacing: normal;
   text-transform: uppercase;
   text-align: initial;
   text-overflow: unset;
   overflow: unset;
   white-space: nowrap;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .tabs-content .tabs-content-list button p {
@@ -32,14 +34,13 @@
 }
 
 .tabs-content .tabs-content-list button[aria-selected='true'] {
-  border-bottom: 1px solid var(--background-color);
-  background-color: var(--background-color);
+  background-color: var(--text-color, rgb(32 32 32));
+  color: #fff;
   cursor: initial;
 }
 
 .tabs-content .tabs-content-panel {
-  margin-top: -1px;
-  padding: 24px 0;
+  padding: 18px 0;
   overflow: auto;
 }
 
@@ -50,6 +51,34 @@
 .tabs-content .tabs-content-panel img {
   width: 100%;
   height: auto;
+}
+
+/* Prose panels (adventure detail pages): body copy 18px/45px justified. Direct
+   children only, so card descriptions in the landing-page grid are untouched. */
+.tabs-content .tabs-content-panel > div > p {
+  line-height: 45px;
+  text-align: justify;
+}
+
+/* Plain lists in prose panels ("Related trips", "What to Bring"): no bullets or
+   indent; each item gets a small chevron marker, as on the source. Card-grid
+   lists (with pictures) are excluded. */
+.tabs-content .tabs-content-panel ul:not(:has(li picture)) {
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.tabs-content .tabs-content-panel ul:not(:has(li picture)) > li {
+  padding-left: 12px;
+  line-height: 36px;
+}
+
+.tabs-content .tabs-content-panel ul:not(:has(li picture)) > li::before {
+  content: '\203A';
+  position: relative;
+  left: -8px;
+  font-size: 14px;
 }
 
 /*

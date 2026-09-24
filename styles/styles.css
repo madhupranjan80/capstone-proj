@@ -437,6 +437,15 @@ main > .section:first-child .default-content-wrapper > ol li a:hover {
   text-decoration: underline;
 }
 
+/* Adventure detail page title: short yellow underline (source cmp-title--underline). */
+main:has(> .columns-details-container) .columns-details-container h1::after {
+  content: '';
+  display: block;
+  width: 84px;
+  margin-top: 8px;
+  border-bottom: 2px solid var(--cta-color, rgb(255 234 0));
+}
+
 /*
  * "Share this Adventure" label (adventure detail pages).
  * It imports as an <h5>, so the global heading rule renders it in the Asar
