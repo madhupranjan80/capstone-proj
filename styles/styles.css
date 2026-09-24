@@ -399,15 +399,15 @@ main .section.highlight {
 }
 
 /*
- * Breadcrumb (adventure detail pages).
+ * Breadcrumb (adventure detail + magazine article pages).
  * The breadcrumb imports as a plain <ol> in the first section's default
  * content, so by default it renders as a numbered list. Restyle it into an
  * inline trail matching the source: uppercase 14px, dark links (weight 600,
  * no underline), a chevron separator between crumbs, and the current page as
- * plain (non-link) text. Scoped to the adventure detail template via the
- * presence of .columns-details-container so no other ordered lists are hit.
+ * plain (non-link) text. On this site the only ordered lists authored in a
+ * page's first section are breadcrumbs.
  */
-main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol {
+main > .section:first-child .default-content-wrapper > ol {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -416,24 +416,24 @@ main:has(> .columns-details-container) > .section:first-child .default-content-w
   letter-spacing: 0.02em;
 }
 
-main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li {
+main > .section:first-child .default-content-wrapper > ol li {
   display: inline;
   color: var(--text-color, rgb(32 32 32));
 }
 
-main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li:not(:first-child)::before {
+main > .section:first-child .default-content-wrapper > ol li:not(:first-child)::before {
   content: "\203A";
   padding: 0 8px;
   color: rgb(105 105 105);
 }
 
-main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li a {
+main > .section:first-child .default-content-wrapper > ol li a {
   color: var(--text-color, rgb(32 32 32));
   font-weight: 600;
   text-decoration: none;
 }
 
-main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li a:hover {
+main > .section:first-child .default-content-wrapper > ol li a:hover {
   text-decoration: underline;
 }
 
@@ -462,4 +462,151 @@ main .section.underline .default-content-wrapper h2::after {
   width: 84px;
   margin-top: 13.5px;
   border-bottom: 2px solid var(--cta-color, rgb(255 234 0));
+}
+
+/*
+ * Pull quote (magazine articles). Mirrors the source's cmp-text--quote: a grey
+ * panel with the quote in the large serif heading font, a short yellow rule
+ * under it, and an optional attribution line. Authors write the attribution as
+ * an underlined paragraph directly after the quote (e.g. "- Sofia Sjöberg");
+ * it joins the same panel and the underline is dropped, as on the source.
+ */
+main .default-content-wrapper blockquote {
+  margin: 18px 0;
+  padding: 32px 32px 32px 46px;
+  background-color: rgb(235 235 235);
+  font-family: var(--heading-font-family);
+  font-size: 28px;
+  line-height: 1.5;
+  color: var(--text-color, rgb(32 32 32));
+}
+
+main .default-content-wrapper blockquote p {
+  margin: 0;
+  font: inherit;
+}
+
+main .default-content-wrapper blockquote::after {
+  content: '';
+  display: block;
+  width: 84px;
+  margin-top: 9px;
+  border-bottom: 2px solid var(--cta-color, rgb(255 234 0));
+}
+
+/* quote followed by an attribution: the attribution closes the panel */
+main .default-content-wrapper blockquote:has(+ p u) {
+  margin-bottom: 0;
+  padding-bottom: 14px;
+}
+
+main .default-content-wrapper blockquote + p:has(u) {
+  margin: 0 0 18px;
+  padding: 4px 32px 32px;
+  background-color: rgb(235 235 235);
+  font-size: 18px;
+  line-height: 45px;
+}
+
+main .default-content-wrapper blockquote + p u {
+  text-decoration: none;
+}
+
+@media (width >= 900px) {
+  main .default-content-wrapper blockquote {
+    font-size: 36px;
+    line-height: 54px;
+  }
+}
+
+/*
+ * Magazine article template: "article" and "sidebar" section styles
+ * (authorable via Section Metadata). Values from the source at 1440px:
+ * article column 776px, sidebar 291px, 97px apart; body copy 18px/45px justified.
+ */
+
+/* byline under the article title: small uppercase sans, not a serif heading */
+main .section.article .default-content-wrapper > h1 + h4 {
+  margin: 21px 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-transform: uppercase;
+}
+
+main .section.article .default-content-wrapper > p {
+  line-height: 45px;
+  text-align: justify;
+}
+
+/* sidebar: "Share this story" label + Pinterest link + related-article list */
+main .section.sidebar h5 {
+  margin: 23px 0;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+main .section.sidebar ul {
+  margin: 18px 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.sidebar ul li {
+  min-height: 120px;
+  margin: 0 0 18px;
+  padding: 8px 16px;
+  border-left: 5px solid rgb(235 235 235);
+  font-size: 12px;
+  line-height: 18px;
+  text-transform: uppercase;
+  color: rgb(105 105 105);
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.sidebar ul li a {
+  display: block;
+  font-size: 18px;
+  line-height: 27px;
+  color: var(--text-color);
+}
+
+@media (width >= 900px) {
+  main:has(> .section.article):has(> .section.sidebar) {
+    display: grid;
+    align-items: start;
+    row-gap: 24px;
+    grid-template-columns:
+      [full-start] minmax(24px, 1fr)
+      [content-start] minmax(0, 776px) [article-end]
+      minmax(0, 97px) [sidebar-start]
+      minmax(0, 291px) [content-end]
+      minmax(24px, 1fr) [full-end];
+  }
+
+  /* sections span the content width by default (hero, trailing metadata) */
+  main:has(> .section.article):has(> .section.sidebar) > .section {
+    grid-column: content-start / content-end;
+    margin: 0;
+  }
+
+  main:has(> .section.article):has(> .section.sidebar) > .section.article {
+    grid-column: content-start / article-end;
+    grid-row: 2;
+  }
+
+  main:has(> .section.article):has(> .section.sidebar) > .section.sidebar {
+    grid-column: sidebar-start / content-end;
+    grid-row: 2;
+  }
+
+  main:has(> .section.article):has(> .section.sidebar) > .section > div {
+    max-width: none;
+    margin: 0;
+    padding: 0 14px;
+  }
 }
