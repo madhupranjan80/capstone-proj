@@ -312,3 +312,127 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/*
+ * Adventure detail template: two-column (sidebar + content) layout.
+ * On these pages the trip-spec list (.columns-details) and the tabbed
+ * content (.tabs-content) are two SEPARATE sibling sections. This rule
+ * turns <main> into a content-aligned grid so the spec/share panel becomes
+ * a ~290px left sidebar with the tabs beside it, and the H1 spans above both.
+ * Scoped with :has() so it only applies to pages that contain BOTH blocks
+ * (the adventures landing page has tabs-content but no columns-details, and
+ * the home page has neither, so neither is affected). Mobile stays single
+ * column because the whole layout lives inside the desktop media query.
+ */
+@media (width >= 900px) {
+  main:has(> .columns-details-container):has(> .tabs-content-container) {
+    display: grid;
+    grid-auto-flow: row dense;
+    align-items: start;
+    row-gap: 40px;
+    grid-template-columns:
+      [full-start] minmax(24px, 1fr)
+      [content-start] minmax(0, 290px) [sidebar-end]
+      minmax(0, 14px) [tabs-start]
+      minmax(0, 896px) [content-end]
+      minmax(24px, 1fr) [full-end];
+  }
+
+  /* Every direct section spans the full viewport width and keeps its own
+     inner max-width (breadcrumb, carousel hero, trailing section). Row
+     placement is left to normal source-order auto-flow, so this works no
+     matter how many sections precede the two-column region. Margins are
+     reset because they would not collapse inside the grid; row-gap provides
+     the vertical rhythm instead. */
+  main:has(> .columns-details-container):has(> .tabs-content-container) > .section {
+    grid-column: full-start / full-end;
+    margin: 0;
+  }
+
+  /* Promote the columns-details section so its H1 / spec / share children
+     participate directly in the main grid. */
+  main:has(> .columns-details-container):has(> .tabs-content-container) .columns-details-container {
+    display: contents;
+  }
+
+  /* H1 spans the whole content area above both columns. */
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .columns-details-container > .default-content-wrapper:has(h1) {
+    grid-column: content-start / content-end;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Left sidebar: the spec list and the "Share this Adventure" panel.
+     They auto-flow into consecutive rows in the sidebar column. */
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .columns-details-wrapper,
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .columns-details-container > .default-content-wrapper:has(#share-this-adventure) {
+    grid-column: content-start / sidebar-end;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Right column: the tabbed content, in the content column beside the
+     sidebar. Auto-placement (source order) puts it on the same grid row as
+     the spec list, so their tops align. It spans many rows so the extra
+     height of the (tall) tabbed content is absorbed by the empty implicit
+     rows of the sidebar column below the spec/share panels, instead of
+     stretching the spec/share rows themselves. Combined with `row dense` on
+     the grid, the short "Share this Adventure" panel then backfills the
+     sidebar column directly beneath the spec list. */
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .tabs-content-container {
+    grid-column: tabs-start / content-end;
+    grid-row: span 20;
+  }
+
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .tabs-content-wrapper {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/*
+ * Breadcrumb (adventure detail pages).
+ * The breadcrumb imports as a plain <ol> in the first section's default
+ * content, so by default it renders as a numbered list. Restyle it into an
+ * inline trail matching the source: uppercase 14px, dark links (weight 600,
+ * no underline), a chevron separator between crumbs, and the current page as
+ * plain (non-link) text. Scoped to the adventure detail template via the
+ * presence of .columns-details-container so no other ordered lists are hit.
+ */
+main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li {
+  display: inline;
+  color: var(--text-color, rgb(32 32 32));
+}
+
+main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li:not(:first-child)::before {
+  content: "\203A";
+  padding: 0 8px;
+  color: rgb(105 105 105);
+}
+
+main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li a {
+  color: var(--text-color, rgb(32 32 32));
+  font-weight: 600;
+  text-decoration: none;
+}
+
+main:has(> .columns-details-container) > .section:first-child .default-content-wrapper ol li a:hover {
+  text-decoration: underline;
+}
