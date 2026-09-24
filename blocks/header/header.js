@@ -33,6 +33,41 @@ function toggleMenu(nav, expanded) {
 }
 
 /**
+ * Build the "Sign In" dialog shown from the utility bar (mirrors the source's
+ * sign-in modal). The source form posts to an AEM login endpoint that does not
+ * exist on Edge Delivery, so this is presentational: submitting just closes it.
+ * Closes on outside click (as on the source) and on Escape (native <dialog>).
+ * @returns {HTMLDialogElement}
+ */
+function buildSignInDialog() {
+  const dialog = document.createElement('dialog');
+  dialog.className = 'nav-signin';
+  dialog.setAttribute('aria-labelledby', 'nav-signin-title');
+  dialog.innerHTML = `
+    <h2 id="nav-signin-title">Sign In</h2>
+    <h3>Welcome Back</h3>
+    <form method="dialog" class="nav-signin-form">
+      <input type="text" name="username" placeholder="Username" aria-label="Username" autocomplete="username">
+      <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password">
+      <p><a href="#" class="nav-signin-forgot">Forgot your password?</a></p>
+      <button type="submit">Sign In</button>
+    </form>
+    <hr>`;
+
+  dialog.querySelector('.nav-signin-forgot').addEventListener('click', (e) => e.preventDefault());
+
+  // A click on the backdrop lands on the <dialog> itself, outside its box.
+  dialog.addEventListener('click', (e) => {
+    if (e.target !== dialog) return;
+    const r = dialog.getBoundingClientRect();
+    const inside = e.clientX >= r.left && e.clientX <= r.right
+      && e.clientY >= r.top && e.clientY <= r.bottom;
+    if (!inside) dialog.close();
+  });
+  return dialog;
+}
+
+/**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
@@ -191,6 +226,22 @@ export default async function decorate(block) {
     });
   }
 
+  // "Sign In" opens the sign-in dialog. The imported link carries a real href
+  // (the source used #sign-in), so match on its label.
+  const signInLink = [...utility.querySelectorAll('.nav-utility-item a')]
+    .find((a) => /^sign in$/i.test(a.textContent.trim()));
+  let signInDialog;
+  if (signInLink) {
+    signInDialog = buildSignInDialog();
+    signInLink.setAttribute('aria-haspopup', 'dialog');
+    signInLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      locale.hidden = true;
+      if (langToggle) langToggle.setAttribute('aria-expanded', 'false');
+      signInDialog.showModal();
+    });
+  }
+
   // hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
@@ -213,5 +264,6 @@ export default async function decorate(block) {
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+  if (signInDialog) navWrapper.append(signInDialog);
   block.append(navWrapper);
 }
