@@ -78,6 +78,12 @@ function createSlide(row, slideIndex, carouselId) {
   slide.classList.add('carousel-hero-slide');
 
   row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+    // image-only slides (adventure pages) have an empty text cell: drop it so
+    // no blank white card overlaps the image
+    if (colIdx > 0 && !column.textContent.trim() && !column.querySelector('picture, img')) {
+      column.remove();
+      return;
+    }
     column.classList.add(`carousel-hero-slide-${colIdx === 0 ? 'image' : 'content'}`);
     slide.append(column);
   });
