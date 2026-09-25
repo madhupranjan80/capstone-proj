@@ -183,6 +183,54 @@
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
+/* Image-only gallery (adventure detail pages; source .cmp-carousel):
+   fixed 400px panoramic strip, dots 23px below, and long black arrows
+   below the image on the right, level with the dots. */
+.carousel-hero.image-only {
+  position: relative;
+}
+
+.carousel-hero.image-only .carousel-hero-slides-container {
+  position: static;
+}
+
+.carousel-hero.image-only .carousel-hero-slide-image img {
+  height: 400px;
+  aspect-ratio: auto;
+}
+
+.carousel-hero.image-only .carousel-hero-slide-indicators {
+  margin-top: 23px;
+}
+
+.carousel-hero.image-only .carousel-hero-navigation-buttons {
+  inset: auto 13px -8px auto;
+  gap: 17px;
+}
+
+/* arrow shaft */
+.carousel-hero.image-only .carousel-hero-navigation-buttons button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 2px;
+  background-color: currentcolor;
+  transform: translate(-50%, -50%);
+}
+
+/* arrow head at the end of the shaft */
+.carousel-hero.image-only .carousel-hero-navigation-buttons button::after {
+  left: calc(50% - 5px);
+  width: 9px;
+  height: 9px;
+}
+
+.carousel-hero.image-only .carousel-hero-navigation-buttons button.slide-next::after {
+  left: calc(50% + 5px);
+}
+
 @media (width >= 900px) {
   /* Card overlaps the image bottom, inset from the edges (source gutter ~124px) */
   .carousel-hero .carousel-hero-slide-content {

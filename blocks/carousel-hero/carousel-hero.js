@@ -149,6 +149,12 @@ export default function decorate(block) {
   container.append(slidesWrapper);
   block.prepend(container);
 
+  // image-only gallery (adventure pages): styled as a short panoramic strip
+  // with the arrows below the image
+  if (!block.querySelector('.carousel-hero-slide-content')) {
+    block.classList.add('image-only');
+  }
+
   if (!isSingleSlide) {
     bindEvents(block);
   }

@@ -405,6 +405,15 @@ main .section.highlight {
   }
 }
 
+/* The hero gallery sits close under the breadcrumb (source ~22px), tighter
+   than the usual 40px section spacing. On mobile the negative margin collapses
+   with the breadcrumb section's 40px bottom margin; on desktop it offsets the
+   grid row-gap. */
+main:has(> .columns-details-container):has(> .tabs-content-container)
+  > .section.carousel-hero-container {
+  margin-top: -18px;
+}
+
 /*
  * Breadcrumb (adventure detail + magazine article pages).
  * The breadcrumb imports as a plain <ol> in the first section's default
