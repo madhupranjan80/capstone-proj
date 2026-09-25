@@ -78,6 +78,12 @@ function createSlide(row, slideIndex, carouselId) {
   slide.classList.add('carousel-hero-slide');
 
   row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+    // image-only slides (adventure pages) have an empty text cell: drop it so
+    // no blank white card overlaps the image
+    if (colIdx > 0 && !column.textContent.trim() && !column.querySelector('picture, img')) {
+      column.remove();
+      return;
+    }
     column.classList.add(`carousel-hero-slide-${colIdx === 0 ? 'image' : 'content'}`);
     slide.append(column);
   });
@@ -142,6 +148,12 @@ export default function decorate(block) {
 
   container.append(slidesWrapper);
   block.prepend(container);
+
+  // image-only gallery (adventure pages): styled as a short panoramic strip
+  // with the arrows below the image
+  if (!block.querySelector('.carousel-hero-slide-content')) {
+    block.classList.add('image-only');
+  }
 
   if (!isSingleSlide) {
     bindEvents(block);

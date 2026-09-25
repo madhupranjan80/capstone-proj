@@ -364,6 +364,13 @@ main .section.highlight {
     padding: 0;
   }
 
+  /* the row-gap already separates the H1 from the hero dots (source ~35px);
+     its own top margin would double the space */
+  main:has(> .columns-details-container):has(> .tabs-content-container)
+    .columns-details-container > .default-content-wrapper > h1:first-child {
+    margin-top: 0;
+  }
+
   /* Left sidebar: the spec list and the "Share this Adventure" panel.
      They auto-flow into consecutive rows in the sidebar column. */
   main:has(> .columns-details-container):has(> .tabs-content-container)
@@ -396,6 +403,15 @@ main .section.highlight {
     margin: 0;
     padding: 0;
   }
+}
+
+/* The hero gallery sits close under the breadcrumb (source ~22px), tighter
+   than the usual 40px section spacing. On mobile the negative margin collapses
+   with the breadcrumb section's 40px bottom margin; on desktop it offsets the
+   grid row-gap. */
+main:has(> .columns-details-container):has(> .tabs-content-container)
+  > .section.carousel-hero-container {
+  margin-top: -18px;
 }
 
 /*
