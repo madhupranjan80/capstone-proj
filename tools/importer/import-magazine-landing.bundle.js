@@ -42,10 +42,52 @@ var CustomImportScript = (() => {
   });
 
   // tools/importer/parsers/cards-article.js
-  function parse(element, { document: document2 }) {
+  function listingRows(items, pageUrl) {
+    if (!items.length) return null;
+    const paths = items.map((item) => {
+      const link = item.querySelector("a.cmp-image-list__item-title-link, a[href]");
+      const href = link && link.getAttribute("href");
+      if (!href) return null;
+      try {
+        return new URL(href, "https://wknd.site").pathname.replace(/\.html$/, "");
+      } catch (e) {
+        return null;
+      }
+    });
+    if (paths.some((p) => !p)) return null;
+    const folders = paths.map((p) => p.slice(0, p.lastIndexOf("/") + 1));
+    if (!folders.every((f) => f === folders[0])) return null;
+    const source = folders[0];
+    const titles = items.map((item) => {
+      const el = item.querySelector(".cmp-image-list__item-title, a.cmp-image-list__item-title-link");
+      return el ? el.textContent.trim() : "";
+    });
+    const asc = [...titles].sort((a, b) => a.localeCompare(b));
+    let sort = "newest";
+    if (titles.every((t, i) => t === asc[i])) sort = "title";
+    else if (titles.every((t, i) => t === asc[asc.length - 1 - i])) sort = "title-desc";
+    let pagePath = "";
+    try {
+      pagePath = new URL(pageUrl).pathname.replace(/\.html$/, "");
+    } catch (e) {
+    }
+    const rows = [["Source", source], ["Sort", sort]];
+    if (`${pagePath}/` !== source) rows.push(["Limit", String(items.length)]);
+    return rows;
+  }
+  function parse(element, { document: document2, url, params }) {
     let items = Array.from(element.querySelectorAll("li.cmp-image-list__item, .cmp-image-list__item"));
     if (!items.length) {
       items = Array.from(element.querySelectorAll("article.cmp-image-list__item-content, .cmp-image-list__item-content"));
+    }
+    const settings = listingRows(items, params && params.originalURL || url);
+    if (settings) {
+      const listing = WebImporter.Blocks.createBlock(document2, {
+        name: "listing",
+        cells: settings
+      });
+      element.replaceWith(listing);
+      return;
     }
     const cells = [];
     items.forEach((item) => {

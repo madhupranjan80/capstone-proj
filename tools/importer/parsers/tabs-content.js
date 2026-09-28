@@ -100,9 +100,77 @@ function buildProseContent(panel) {
   });
 }
 
+// Source tabs on the adventures landing page are CMS tags; the migrated pages
+// carry an "Activity" value instead (indexed as `activity`). Tabs whose label
+// differs from the activity names they cover are mapped here; any other tab
+// label is used as the activity name itself.
+const TAB_ACTIVITIES = {
+  climbing: 'Rock Climbing',
+  travel: 'Social, Camping',
+};
+
+/**
+ * Landing-page card-grid tabs are a query-driven listing on the source: emit a
+ * "listing (tabs)" settings block (see blocks/listing) resolved against
+ * /query-index.json at runtime, so new adventures appear without re-authoring.
+ *   | Source | /us/en/adventures/ |  | Sort | title |
+ *   | <Tab label> | <activities> |   (empty = all pages, e.g. the "All" tab)
+ * Returns null when the panels are not all card lists into one folder.
+ */
+function listingTabRows(tabs, panels) {
+  if (!tabs.length || panels.some((panel) => !panel || !panel.querySelector('.cmp-image-list__item'))) {
+    return null;
+  }
+  const panelItems = panels.map((panel) => Array.from(panel.querySelectorAll('.cmp-image-list__item')));
+  const pathOf = (item) => {
+    const link = item.querySelector('a.cmp-image-list__item-title-link, a[href]');
+    const href = link && link.getAttribute('href');
+    try {
+      return href ? new URL(href, 'https://wknd.site').pathname.replace(/\.html$/, '') : null;
+    } catch (e) {
+      return null;
+    }
+  };
+  const allPaths = panelItems.flat().map(pathOf);
+  if (allPaths.some((p) => !p)) return null;
+  const folders = allPaths.map((p) => p.slice(0, p.lastIndexOf('/') + 1));
+  if (!folders.every((f) => f === folders[0])) return null;
+  const uniqueCount = new Set(allPaths).size;
+
+  // sort order of the widest ("All") tab
+  const widest = panelItems.reduce((a, b) => (b.length > a.length ? b : a));
+  const titles = widest.map((item) => {
+    const el = item.querySelector('.cmp-image-list__item-title, a.cmp-image-list__item-title-link');
+    return el ? el.textContent.trim() : '';
+  });
+  const asc = [...titles].sort((a, b) => a.localeCompare(b));
+  let sort = 'newest';
+  if (titles.every((t, i) => t === asc[i])) sort = 'title';
+  else if (titles.every((t, i) => t === asc[asc.length - 1 - i])) sort = 'title-desc';
+
+  const rows = [['Source', folders[0]], ['Sort', sort]];
+  tabs.forEach((tab, i) => {
+    const label = tab.textContent.trim();
+    if (!label) return;
+    const showsAll = panelItems[i].length === uniqueCount;
+    rows.push([label, showsAll ? '' : (TAB_ACTIVITIES[label.toLowerCase()] || label)]);
+  });
+  return rows;
+}
+
 export default function parse(element, { document }) {
   const tabs = Array.from(element.querySelectorAll('.cmp-tabs__tab'));
   const panels = Array.from(element.querySelectorAll('.cmp-tabs__tabpanel'));
+
+  const listing = listingTabRows(tabs, panels);
+  if (listing) {
+    const block = WebImporter.Blocks.createBlock(document, {
+      name: 'listing (tabs)',
+      cells: listing,
+    });
+    element.replaceWith(block);
+    return;
+  }
 
   const cells = [];
   tabs.forEach((tab, i) => {

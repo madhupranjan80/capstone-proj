@@ -8,12 +8,68 @@
  * Source DOM (source.html): ul.cmp-image-list > li.cmp-image-list__item
  *   > article.cmp-image-list__item-content containing image-link (img),
  *   title-link (span title), and description span.
+ *
+ * Query-driven source lists (every card links into one folder) are emitted as
+ * a separate "listing" settings block instead (see blocks/listing), so newly
+ * published pages appear without re-authoring:
+ *   | Source | /us/en/magazine/ |  folder all cards link into
+ *   | Sort   | newest | title | title-desc |  order the source list is in
+ *   | Limit  | 4 |  card count; omitted on the folder's own landing page
  */
-export default function parse(element, { document }) {
+
+// Listing settings rows for the cards, or null when they don't all link into
+// one folder (then regular cards are emitted).
+function listingRows(items, pageUrl) {
+  if (!items.length) return null;
+  const paths = items.map((item) => {
+    const link = item.querySelector('a.cmp-image-list__item-title-link, a[href]');
+    const href = link && link.getAttribute('href');
+    if (!href) return null;
+    try {
+      return new URL(href, 'https://wknd.site').pathname.replace(/\.html$/, '');
+    } catch (e) {
+      return null;
+    }
+  });
+  if (paths.some((p) => !p)) return null;
+  const folders = paths.map((p) => p.slice(0, p.lastIndexOf('/') + 1));
+  if (!folders.every((f) => f === folders[0])) return null;
+  const source = folders[0];
+
+  const titles = items.map((item) => {
+    const el = item.querySelector('.cmp-image-list__item-title, a.cmp-image-list__item-title-link');
+    return el ? el.textContent.trim() : '';
+  });
+  const asc = [...titles].sort((a, b) => a.localeCompare(b));
+  let sort = 'newest';
+  if (titles.every((t, i) => t === asc[i])) sort = 'title';
+  else if (titles.every((t, i) => t === asc[asc.length - 1 - i])) sort = 'title-desc';
+
+  let pagePath = '';
+  try {
+    pagePath = new URL(pageUrl).pathname.replace(/\.html$/, '');
+  } catch (e) { /* keep the limit */ }
+
+  const rows = [['Source', source], ['Sort', sort]];
+  if (`${pagePath}/` !== source) rows.push(['Limit', String(items.length)]);
+  return rows;
+}
+
+export default function parse(element, { document, url, params }) {
   // Each list item is one card. Fallback to the element itself if no <li> present.
   let items = Array.from(element.querySelectorAll('li.cmp-image-list__item, .cmp-image-list__item'));
   if (!items.length) {
     items = Array.from(element.querySelectorAll('article.cmp-image-list__item-content, .cmp-image-list__item-content'));
+  }
+
+  const settings = listingRows(items, (params && params.originalURL) || url);
+  if (settings) {
+    const listing = WebImporter.Blocks.createBlock(document, {
+      name: 'listing',
+      cells: settings,
+    });
+    element.replaceWith(listing);
+    return;
   }
 
   const cells = [];
