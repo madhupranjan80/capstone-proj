@@ -1,0 +1,5 @@
+/* The listing block hands its cards to cards-article / tabs-content, which own
+   the styling; hide the settings table until it has been replaced. */
+.listing {
+  display: none;
+}

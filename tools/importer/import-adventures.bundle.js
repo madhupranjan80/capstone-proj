@@ -156,9 +156,59 @@ var CustomImportScript = (() => {
       return node.textContent.trim().length > 0;
     });
   }
+  var TAB_ACTIVITIES = {
+    climbing: "Rock Climbing",
+    travel: "Social, Camping"
+  };
+  function listingTabRows(tabs, panels) {
+    if (!tabs.length || panels.some((panel) => !panel || !panel.querySelector(".cmp-image-list__item"))) {
+      return null;
+    }
+    const panelItems = panels.map((panel) => Array.from(panel.querySelectorAll(".cmp-image-list__item")));
+    const pathOf = (item) => {
+      const link = item.querySelector("a.cmp-image-list__item-title-link, a[href]");
+      const href = link && link.getAttribute("href");
+      try {
+        return href ? new URL(href, "https://wknd.site").pathname.replace(/\.html$/, "") : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    const allPaths = panelItems.flat().map(pathOf);
+    if (allPaths.some((p) => !p)) return null;
+    const folders = allPaths.map((p) => p.slice(0, p.lastIndexOf("/") + 1));
+    if (!folders.every((f) => f === folders[0])) return null;
+    const uniqueCount = new Set(allPaths).size;
+    const widest = panelItems.reduce((a, b) => b.length > a.length ? b : a);
+    const titles = widest.map((item) => {
+      const el = item.querySelector(".cmp-image-list__item-title, a.cmp-image-list__item-title-link");
+      return el ? el.textContent.trim() : "";
+    });
+    const asc = [...titles].sort((a, b) => a.localeCompare(b));
+    let sort = "newest";
+    if (titles.every((t, i) => t === asc[i])) sort = "title";
+    else if (titles.every((t, i) => t === asc[asc.length - 1 - i])) sort = "title-desc";
+    const rows = [["Source", folders[0]], ["Sort", sort]];
+    tabs.forEach((tab, i) => {
+      const label = tab.textContent.trim();
+      if (!label) return;
+      const showsAll = panelItems[i].length === uniqueCount;
+      rows.push([label, showsAll ? "" : TAB_ACTIVITIES[label.toLowerCase()] || label]);
+    });
+    return rows;
+  }
   function parse3(element, { document: document2 }) {
     const tabs = Array.from(element.querySelectorAll(".cmp-tabs__tab"));
     const panels = Array.from(element.querySelectorAll(".cmp-tabs__tabpanel"));
+    const listing = listingTabRows(tabs, panels);
+    if (listing) {
+      const block2 = WebImporter.Blocks.createBlock(document2, {
+        name: "listing (tabs)",
+        cells: listing
+      });
+      element.replaceWith(block2);
+      return;
+    }
     const cells = [];
     tabs.forEach((tab, i) => {
       const label = tab.textContent.trim();

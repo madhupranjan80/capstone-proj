@@ -45,7 +45,26 @@ export default async function decorate(block) {
   const [brandSrc, navSrc, socialSrc, legalSrc] = sections;
 
   if (brandSrc) { brandSrc.className = 'footer-brand'; footer.append(brandSrc); }
-  if (navSrc) { navSrc.className = 'footer-nav'; footer.append(navSrc); }
+  if (navSrc) {
+    navSrc.className = 'footer-nav';
+    // Mark the section the current page belongs to (source underlines it):
+    // longest path-prefix match, so /us/en/adventures/<slug> marks "Adventures".
+    // The site root is skipped so it never matches every page.
+    const currentPath = window.location.pathname.replace(/\.html$/, '');
+    let best = null;
+    let bestLen = 0;
+    navSrc.querySelectorAll('li a').forEach((a) => {
+      const linkPath = new URL(a.href, window.location.origin).pathname.replace(/\.html$/, '');
+      if (linkPath === '/' || /\/us\/en\/?$/.test(linkPath)) return;
+      if ((currentPath === linkPath || currentPath.startsWith(`${linkPath}/`))
+        && linkPath.length > bestLen) {
+        best = a;
+        bestLen = linkPath.length;
+      }
+    });
+    if (best) best.closest('li').classList.add('footer-active');
+    footer.append(navSrc);
+  }
 
   if (socialSrc) {
     socialSrc.className = 'footer-social';
